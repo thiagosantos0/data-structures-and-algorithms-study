@@ -10,13 +10,15 @@
 ### Divisão de Estudos e Tarefas
 
 **Use these to fill the Status column:**
+
 ✅ -> Done
+
 ⏳ -> In Progress
+
 ❌ -> Not Started
 
-| Conteúdo | Thiago | Ryan |
+| Content | Thiago | Ryan |
 | :--- | :--- | :--- |
-| **Tema** | | |
 | Asymptotic Notations | ❌ | ❌ |
 | General Concepts(Stack, Heap, ADT, Time and Space Complexity) | ❌ | ❌ |
 | Recursion | ❌ | ❌ |
