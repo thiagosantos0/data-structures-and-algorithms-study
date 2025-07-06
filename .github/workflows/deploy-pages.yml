@@ -1,0 +1,90 @@
+name: Deploy Documentation to GitHub Pages
+
+# Aciona o workflow quando houver um push nas branches 'thiago' ou 'ryan'
+on:
+  push:
+    branches:
+      - thiago
+      - ryan
+
+# Permissões para o GITHUB_TOKEN para permitir o deploy no GitHub Pages
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Permite que apenas um deploy ocorra por vez
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main # Começamos com a base da 'main'
+
+      - name: Create docs directory
+        run: mkdir -p docs
+
+      # Pega os arquivos da branch 'thiago'
+      - name: Checkout Thiago's branch
+        uses: actions/checkout@v4
+        with:
+          ref: thiago
+          path: temp_thiago
+
+      - name: Copy Thiago's notes
+        run: |
+          if [ -d "temp_thiago/docs/thiago" ]; then
+            cp -r temp_thiago/docs/thiago docs/
+          fi
+
+      # Pega os arquivos da branch 'ryan'
+      - name: Checkout Ryan's branch
+        uses: actions/checkout@v4
+        with:
+          ref: ryan
+          path: temp_ryan
+
+      - name: Copy Ryan's notes
+        run: |
+          if [ -d "temp_ryan/docs/ryan" ]; then
+            cp -r temp_ryan/docs/ryan docs/
+          fi
+
+      # Opcional: Adiciona uma página inicial simples
+      - name: Create index page
+        run: |
+          echo '# Anotações do Projeto' > docs/index.md
+          echo '' >> docs/index.md
+          echo '## Anotações de Thiago' >> docs/index.md
+          for file in $(find docs/thiago -name "*.md"); do
+            filename=$(basename "$file")
+            echo "- [${filename%.md}](${file#docs/})" >> docs/index.md
+          done
+          echo '' >> docs/index.md
+          echo '## Anotações de Ryan' >> docs/index.md
+          for file in $(find docs/ryan -name "*.md"); do
+            filename=$(basename "$file")
+            echo "- [${filename%.md}](${file#docs/})" >> docs/index.md
+          done
+
+      - name: List final files for debugging
+        run: ls -R
+
+      # Faz o deploy para a branch 'gh-pages'
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+
+      # Faz o deploy para a branch 'gh-pages'
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          publish_branch: gh-pages # O nome da branch de publicação
+          cname: '' # Se você tiver um domínio customizado, coloque aqui
