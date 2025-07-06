@@ -57,5 +57,5 @@ jobs:
       - name: Commit and Push to gh-pages
         run: |
           git add .
-          git commit -m "Deploy docs to gh-pages" || exit 0
+          git commit -m "Deploy docs to gh-pages" --allow-empty
           git push -u origin gh-pages --force
