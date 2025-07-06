@@ -7,4 +7,33 @@
 "A repository dedicated to the in-depth study and implementation of essential Algorithms and Data Structures. The goal is to solidify the fundamentals of computer science and create a documented technical portfolio."
 
 
+### Divisão de Estudos e Tarefas
 
+**Use these to fill the Status column:**
+✅ -> Done
+⏳ -> In Progress
+❌ -> Not Started
+
+| Conteúdo | Thiago | Ryan |
+| :--- | :--- | :--- |
+| **Tema** | | |
+| Asymptotic Notations | ❌ | ❌ |
+| General Concepts(Stack, Heap, ADT, Time and Space Complexity) | ❌ | ❌ |
+| Recursion | ❌ | ❌ |
+| Arrays Representations | ❌ | ❌ |
+| Array ADT | ❌ | ❌ |
+| Strings | ❌ | ❌ |
+| Matrices | ❌ | ❌ |
+| Sparse Matrices And Polynomial Representations | ❌ | ❌ |
+| Linked Lists (Stacks) | ❌ | ❌ |
+| Sparse Matrices And Polynomial Representation with Linked List | ❌ | ❌ |
+| Stack | ❌ | ❌ |
+| Queues | ❌ | ❌ |
+| Trees | ❌ | ❌ |
+| Binary Search Trees | ❌ | ❌ |
+| AVL Trees | ❌ | ❌ |
+| Search Trees | ❌ | ❌ |
+| Heap | ❌ | ❌ |
+| Sorting | ❌ | ❌ |
+| Hashing | ❌ | ❌ |
+| Graphs | ❌ | ❌ |
