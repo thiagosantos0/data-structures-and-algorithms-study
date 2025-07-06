@@ -1,0 +1,61 @@
+name: Deploy Documentation to GitHub Pages
+
+on:
+  push:
+    branches:
+      - thiago
+      - ryan
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git User
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Switch to gh-pages branch
+        run: |
+          git checkout --orphan gh-pages
+          git rm -rf .
+
+      - name: Copy notes from thiago's branch
+        run: git checkout thiago -- docs/thiago || echo "No docs found for thiago"
+
+      - name: Copy notes from ryan's branch
+        run: git checkout ryan -- docs/ryan || echo "No docs found for ryan"
+
+      - name: Create index page
+        run: |
+          echo '# Anotações do Projeto' > index.md
+          echo '' >> index.md
+          echo '## Anotações de Thiago' >> index.md
+          if [ -d "docs/thiago" ]; then
+            for file in $(find docs/thiago -name "*.md"); do
+              filename=$(basename "$file" .md)
+              echo "- [${filename}](${file})" >> index.md
+            done
+          fi
+          echo '' >> index.md
+          echo '## Anotações de Ryan' >> index.md
+          if [ -d "docs/ryan" ]; then
+            for file in $(find docs/ryan -name "*.md"); do
+              filename=$(basename "$file" .md)
+              echo "- [${filename}](${file})" >> index.md
+            done
+          fi
+
+      - name: Commit and Push to gh-pages
+        run: |
+          git add .
+          git commit -m "Deploy docs to gh-pages" || exit 0
+          git push -u origin gh-pages --force
