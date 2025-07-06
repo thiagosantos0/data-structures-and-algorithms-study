@@ -7,7 +7,7 @@
 "A repository dedicated to the in-depth study and implementation of essential Algorithms and Data Structures. The goal is to solidify the fundamentals of computer science and create a documented technical portfolio."
 
 
-### Divisão de Estudos e Tarefas
+### Tracking Table
 
 **Use these to fill the Status column:**
 
@@ -17,7 +17,7 @@
 
 ❌ -> Not Started
 
-| Content | Thiago | Ryan |
+| Content | Ryan | Thiago |
 | :--- | :--- | :--- |
 | Asymptotic Notations | ❌ | ❌ |
 | General Concepts(Stack, Heap, ADT, Time and Space Complexity) | ❌ | ❌ |
