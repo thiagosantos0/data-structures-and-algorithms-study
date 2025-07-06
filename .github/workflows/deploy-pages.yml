@@ -3,9 +3,8 @@ name: Deploy Documentation to GitHub Pages
 # Aciona o workflow quando houver um push nas branches 'thiago' ou 'ryan'
 on:
   push:
-    branches:
-      - thiago
-      - ryan
+    branches-ignore:
+      - main
 
 # Permissões para o GITHUB_TOKEN
 permissions:
