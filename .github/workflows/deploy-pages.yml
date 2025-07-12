@@ -1,0 +1,88 @@
+name: Deploy Documentation to GitHub Pages
+
+on:
+  push:
+    branches:
+      - thiago
+      - ryan
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Git User
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: DEBUG - List available branches
+        run: |
+          echo "Listing all branches found by git:"
+          git branch -a
+
+      - name: Create and switch to gh-pages branch
+        run: |
+          git checkout --orphan gh-pages
+          git rm -rf .
+          echo "Switched to gh-pages and cleared directory."
+
+      - name: DEBUG - List files after clearing
+        run: ls -la
+
+      - name: Copy notes from thiago's branch
+        run: |
+          echo "Attempting to copy 'docs/thiago' from 'origin/thiago'..."
+          git checkout origin/thiago -- docs/thiago || echo "WARN: 'docs/thiago' not found or failed to copy."
+
+      - name: Copy notes from ryan's branch
+        run: |
+          echo "Attempting to copy 'docs/ryan' from 'origin/ryan'..."
+          git checkout origin/ryan -- docs/ryan || echo "WARN: 'docs/ryan' not found or failed to copy."
+
+      - name: DEBUG - List files after copying docs
+        run: ls -laR
+
+      - name: Create index page
+        run: |
+          echo "Creating index.md..."
+          echo '# Anotações do Projeto' > index.md
+          echo '' >> index.md
+          echo '## Anotações de Thiago' >> index.md
+          if [ -d "docs/thiago" ]; then
+            for file in $(find docs/thiago -name "*.md"); do
+              filename=$(basename "$file" .md)
+              echo "- [${filename}](${file})" >> index.md
+            done
+          fi
+          echo '' >> index.md
+          echo '## Anotações de Ryan' >> index.md
+          if [ -d "docs/ryan" ]; then
+            for file in $(find docs/ryan -name "*.md"); do
+              filename=$(basename "$file" .md)
+              echo "- [${filename}](${file})" >> index.md
+            done
+          fi
+          echo "index.md created."
+
+      - name: DEBUG - Show final file structure and status
+        run: |
+          echo "Final file structure:"
+          ls -laR
+          echo "Git status before commit:"
+          git status
+
+      - name: Commit and Push to gh-pages
+        run: |
+          git add .
+          git commit -m "Deploy docs to gh-pages" --allow-empty
+          echo "Attempting to force push to origin gh-pages..."
+          git push -u origin gh-pages --force
+          echo "Push command finished."
