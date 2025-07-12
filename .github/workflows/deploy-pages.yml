@@ -29,10 +29,10 @@ jobs:
           git rm -rf .
 
       - name: Copy notes from thiago's branch
-        run: git checkout thiago -- docs/thiago || echo "No docs found for thiago"
+        run: git checkout origin/thiago -- docs/thiago || echo "No docs found for thiago"
 
       - name: Copy notes from ryan's branch
-        run: git checkout ryan -- docs/ryan || echo "No docs found for ryan"
+        run: git checkout origin/ryan -- docs/ryan || echo "No docs found for ryan"
 
       - name: Create index page
         run: |
